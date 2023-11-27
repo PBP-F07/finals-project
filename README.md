@@ -36,5 +36,7 @@ Admin diibaratkan seperti pengurus perpustakaan yang bertugas untuk memanajemen 
 #### Member
 Member dibuat melalui page register. Member dapat melihat halaman utama yang berisi katalog buku. Member dapat meminjam maupun mendonasikan buku yang ada pada katalog. Member juga dapat memberikan komentar pada sebuah buku ketika mengembalikan buku maupun ketika melihat detil buku. Member dapat membuat wishlist buku yang belum terdaftar pada katalog sehingga nantinya akan ditambahkan oleh admin.
 
+## Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester
+
 ## BERITA ACARA
 https://docs.google.com/spreadsheets/d/1GOokC0-ydu3lmMzPidkrL5I0xRv3lGDx/edit?usp=drive_web&ouid=108171361872174081173&rtpof=true
