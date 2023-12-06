@@ -1,77 +1,76 @@
 import 'package:flutter/material.dart';
+// import 'package:literaphile/screens/wishlist_page/
 
+
+import 'package:literaphile/screens/wishlist_page/wishlist-main.dart';
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
   final List<LiteraphileItem> items = [
-    LiteraphileItem("Wishlist Page", Icons.checklist),
-    LiteraphileItem("feature2", Icons.add_shopping_cart),
-    LiteraphileItem("feature3", Icons.logout),
-];
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+    LiteraphileItem("Daftar Buku", Icons.book),
+    LiteraphileItem("Wishlist", Icons.list_alt),
+    LiteraphileItem("User Dashboard", Icons.settings),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      
       appBar: AppBar(
         title: const Text(
           'Literaphile',
+          style: TextStyle(color: Colors.white), // Set font color to white
         ),
+        backgroundColor: const Color.fromARGB(255, 1, 40, 73), // Set background color to blue
       ),
       body: SingleChildScrollView(
-        // Widget wrapper yang dapat discroll
-        child: Padding(
-          padding: const EdgeInsets.all(10.0), // Set padding dari halaman
-          child: Column(
-            // Widget untuk menampilkan children secara vertikal
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                // Widget Text untuk menampilkan tulisan dengan alignment center dan style yang sesuai
-                child: Text(
-                  'Literaphile Menu', // Text yang menandakan toko
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              // Grid layout
-              GridView.count(
-                // Container pada card kita.
-                primary: true,
-                padding: const EdgeInsets.all(20),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                crossAxisCount: 3,
-                shrinkWrap: true,
-                children: items.map((LiteraphileItem item) {
-                  // Iterasi untuk setiap item
-                  return LiteraphileCard(item);
-                }).toList(),
-              ),
-            ],
+  child: Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        const Padding(
+          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+          child: Text(
+            'Selamat Datang Kembali! Pilih menu yang kamu butuhkan',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-      ),
+        Center(
+          child: Column(
+            children: items.map((LiteraphileItem item) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("You pressed ${item.feature}!"),
+                    ));
+                    if (item.feature == "Wishlist") {
+                      Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const WishlistPage()));
+                    }
+                  },
+                  icon: Icon(item.icon),
+                  label: Text(item.feature),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
     );
   }
-  
 }
+
 
 class LiteraphileItem {
   final String feature;
