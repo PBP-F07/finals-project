@@ -29,14 +29,14 @@ Future<List<Wishlist>> fetchProduct() async {
     // print(data);
 
     // // melakukan konversi data json menjadi object Product
-    List<Wishlist> list_wishlist = [];
+    List<Wishlist> listWishlist = [];
     for (var d in data) {
         if (d != null) {
-            list_wishlist.add(Wishlist.fromJson(d));
+            listWishlist.add(Wishlist.fromJson(d));
         }
     }
     // print(list_product);
-    return list_wishlist;
+    return listWishlist;
 }
 
 @override

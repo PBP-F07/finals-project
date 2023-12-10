@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:literaphile/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +15,12 @@ class MyHomePage extends StatelessWidget {
         foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
                   'List Buku',

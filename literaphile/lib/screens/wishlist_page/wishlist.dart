@@ -12,7 +12,7 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = "";
+  final String _name = "";
   // TODO: Lanjutin dong aokwakowkoawok
   @override
   Widget build(BuildContext context) {
@@ -26,12 +26,12 @@ class _WishlistPageState extends State<WishlistPage> {
         foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
                   'WishList',
