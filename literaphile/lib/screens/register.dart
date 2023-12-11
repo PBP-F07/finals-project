@@ -185,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 if (_formKey.currentState!.validate()) {
                                   // Submit to Django server and wait for response
                                   final http.Response response = await http.post(
-                                    Uri.parse("http://localhost:8000/auth/register/"),
+                                    Uri.parse("https://literaphile-f07-tk.pbp.cs.ui.ac.id/register-mobile/"),
                                     headers: <String, String>{
                                       'Content-Type': 'application/json',
                                     },
