@@ -12,7 +12,7 @@ class BooksCheckPage extends StatefulWidget {
 
 class _BooksCheckPage extends State<BooksCheckPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = "";
+  final String _name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +30,8 @@ class _BooksCheckPage extends State<BooksCheckPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
                   'Books',
                   textAlign: TextAlign.center,

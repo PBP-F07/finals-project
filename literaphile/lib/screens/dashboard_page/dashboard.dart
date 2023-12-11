@@ -12,7 +12,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPage extends State<DashboardPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = "";
+  final String _name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,8 @@ class _DashboardPage extends State<DashboardPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
                   'Dashboard',
                   textAlign: TextAlign.center,
@@ -61,7 +61,7 @@ class _DashboardPage extends State<DashboardPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
+        const Text(
           'Profile',
           style: TextStyle(
             fontSize: 20,
@@ -80,7 +80,7 @@ class _DashboardPage extends State<DashboardPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
+        const Text(
           'Bio',
           style: TextStyle(
             fontSize: 20,

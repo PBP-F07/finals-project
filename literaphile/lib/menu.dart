@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:literaphile/screens/wishlist_page/wishlist-main.dart';
 class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  MyHomePage({Key? key, required String title}) : super(key: key);
   final List<LiteraphileItem> items = [
     LiteraphileItem("Daftar Buku", Icons.book),
     LiteraphileItem("Wishlist", Icons.list_alt),
