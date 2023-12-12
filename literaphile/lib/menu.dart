@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'screens/wishlist_page/wishlist.dart';
 // import 'package:literaphile/screens/wishlist_page/
 
 
-import 'package:literaphile/screens/wishlist_page/wishlist-main.dart';
 class Literaphile extends StatelessWidget {
   Literaphile({Key? key}) : super(key: key);
   final List<LiteraphileItem> items = [

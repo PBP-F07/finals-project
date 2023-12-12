@@ -50,12 +50,12 @@ class Fields {
     });
 
     factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        user: json["user"],
-        title: json["title"],
-        author: json["author"],
-        description: json["description"],
-        image: json["image"],
-        yearOfRelease: json["year_of_release"],
+        user: json["user"] ?? 'No user',
+        title: json["title"] ?? 'No user',
+        author: json["author"] ?? 'No user',
+        description: json["description"]?? 'No user',
+        image: json["image"]?? 'No user',
+        yearOfRelease: json["year_of_release"]?? 'No user',
     );
 
     Map<String, dynamic> toJson() => {
