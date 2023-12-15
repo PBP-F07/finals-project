@@ -24,6 +24,8 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
   String _description = '';
   String _selectedBookTitle = '';
   List<String> _bookTitles = [];
+  List<String> list_img = [];
+  Map<SearchWishlist, String> _wishlistToImageUrlMap = {};
 
   Future<List<SearchWishlist>> searchBooks(String searchQuery) async {
   String GOOGLE_BOOKS_API_KEY = 'AIzaSyDX3PLT7tAjUA0-ZLaSsfKVi1yS_CRp4PI';
@@ -34,20 +36,35 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
   var data = jsonDecode(utf8.decode(response.bodyBytes));
 
   List<SearchWishlist> list_product = [];
+  List<String> list_imgTemp = [];
+  
 
   // Check if data is a list and not empty
   if (data['items'] != null) {
     for (var d in data['items']) {
       if (d != null) {
-        list_product.add(SearchWishlist.fromJson(d));
-        if (list_product.length >= 10) {
-          // Stop the loop once 10 items are added
+         if (!_bookTitles.contains(d['volumeInfo']['title'])) {
+         SearchWishlist wishlistItemOption = SearchWishlist.fromJson(d);
+        list_product.add(wishlistItemOption);
+        // Add image URL to the list_img if available
+      String imageUrl;
+      if (d['volumeInfo'] != null && d['volumeInfo']['imageLinks'] != null) {
+  imageUrl = d['volumeInfo']['imageLinks']['thumbnail'] ?? '';
+} else {
+  // Default image URL if 'imageLinks' or 'thumbnail' is not available
+  imageUrl = 'https://s3.amazonaws.com/media.muckrack.com/profile/images/317132/loudmouthjulia.jpeg.256x256_q100_crop-smart.jpg';
+}
+      list_imgTemp.add(imageUrl);
+      // Add to the map if both title and imageUrl exist
+      
+         }
+        if (list_product.length >= 15){
           break;
         }
       }
     }
   }
-
+  list_img = list_imgTemp;
   print(list_product);
   return list_product;
 }
@@ -95,35 +112,39 @@ TextEditingController _searchController = TextEditingController();
                     trailing: IconButton(
                       icon: Icon(Icons.add),
                       onPressed: () async {
-                          // if (_formKey.currentState!.validate()) {
-                            final response = await request.postJson(
-                              "https://literaphile-f07-tk.pbp.cs.ui.ac.id/wishlist/create-flutter/",
-                              jsonEncode(<String, String>{
-                                  'title' : _searchResults[index].volumeInfo.title,
-                                  'author' : _searchResults[index].volumeInfo.authors.join(', ') ,
-                                  'description' : "",
-                                  'image' : "",
-                                  'year_of_release' : "",
-                                  // TODO: Sesuaikan field data sesuai dengan aplikasimu
-                              }));
-                              if (response['status'] == 'success') {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                  content: Text("Produk baru berhasil disimpan!"),
-                                  ));
-                                  // Navigator.pushReplacement(
-                                  //     context,
-                                  //     MaterialPageRoute(builder: (context) => MyHomePage()),
-                                  // );
-                              } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(const SnackBar(
-                                      content:
-                                          Text("Terdapat kesalahan, silakan coba lagi."),
-                                  ));
-                              }
-                          
-                      },
+  final response = await request.postJson(
+    "https://literaphile-f07-tk.pbp.cs.ui.ac.id/wishlist/create-flutter/",
+    jsonEncode(<String, String>{
+      'title': _searchResults[index].volumeInfo.title,
+      'author': _searchResults[index].volumeInfo.authors.join(','),
+      'description': "",
+      'image': list_img[index],
+      'year_of_release': "",
+      // TODO: Sesuaikan field data sesuai dengan aplikasimu
+    }),
+  );
+  
+  if (response['status'] == 'success') {
+    // _searchResults.remove(_searchResults[index-1]);
+    // list_img.remove(list_img[index-1]);
+    _bookTitles.add(_searchResults[index].volumeInfo.title);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      
+      content: Text("Produk baru berhasil disimpan!"),
+    ));
+
+    // Hapus produk dari _searchResults
+    setState(() {
+      _searchBooks();
+      // _searchResults.removeAt(index);
+    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Terdapat kesalahan, silakan coba lagi."),
+    ));
+  }
+},
+
                                           ),
                   );
                 },
