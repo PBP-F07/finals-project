@@ -51,7 +51,7 @@ class RightDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.add_shopping_cart),
-            title: const Text('Tambah Produk'),
+            title: const Text('Tambah Buku'),
             // Bagian redirection ke ShopFormPage
             onTap: () {
               /*

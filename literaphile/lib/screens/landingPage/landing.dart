@@ -16,9 +16,30 @@ class _LandingPageState extends State<LandingPage> {
   List<Books> bookList = [];
 
   Future<List<Books>> fetchBooks() async {
-    // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
     var url = Uri.parse(
         'http://localhost:8000/get_books/');
+    var response = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+    );
+
+    // melakukan decode response menjadi bentuk json
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    // melakukan konversi data json menjadi object Product
+    List<Books> list_books = [];
+    for (var d in data) {
+        if (d != null) {
+            list_books.add(Books.fromJson(d));
+            bookList.add(Books.fromJson(d));
+        }
+    }
+    return list_books;
+  }
+
+  Future<List<Books>> fetchSearchBooks(String searchTitle) async {
+    var url = Uri.parse(
+        'http://localhost:8000/search_books_static/?search_title=$searchTitle');
     var response = await http.get(
         url,
         headers: {"Content-Type": "application/json"},
@@ -41,37 +62,37 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
 
-    // double screenWidth = MediaQuery.of(context).size.width;
-    // int axisCount;
+    double screenWidth = MediaQuery.of(context).size.width;
+    int axisCount;
 
-    // if(screenWidth < 750) {
-    //   axisCount = 2;
-    //   if(screenWidth < 500) {
-    //     axisCount = 1;
-    //   }
-    // } else {
-    //   axisCount = 3;
-    // }
+    if(screenWidth < 980) {
+      axisCount = 2;
 
-    // final List<BookItem> books = [
-    //   BookItem("Lihat Produk", Icons.checklist),
-    //   BookItem("Tambah Produk", Icons.add_shopping_cart),
-    //   BookItem("Logout", Icons.logout),
-    // ];
+      if(screenWidth < 700) {
+        axisCount = 1;
+      }
+     } else {
+       axisCount = 3;
+     }
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text("LiteraPhile"),
+        title: const Text(
+          "LiteraPhile",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       endDrawer: const RightDrawer(),
       body: Column(
         children: [
-          const Padding(
-              padding: EdgeInsets.only(top: 50.0, bottom: 10.0),
+          Padding(
+              padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "LiteraPhile",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -79,8 +100,8 @@ class _LandingPageState extends State<LandingPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     "Fasilkom's #1 Book Lending App",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -88,7 +109,60 @@ class _LandingPageState extends State<LandingPage> {
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget> [
+                      ElevatedButton(onPressed: () {}, child: const Text("Tambahkan Wishlist")),
+                      const SizedBox(width: 30),
+                      ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                margin: const EdgeInsets.all(25.0),
+                                height: MediaQuery.of(context).size.height / 2,
+                                width: MediaQuery.of(context).size.width * 2,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    const Text(
+                                      "About", 
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text("Close")),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: const Text("About")),
+                    ],
+                  ),
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    width: screenWidth - (screenWidth / 4),
+                    child: TextField(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: "Search",
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: Colors.grey.shade800,
+                      ),
+                    ),
+                  )
                 ],
               )
             ),
@@ -111,13 +185,34 @@ class _LandingPageState extends State<LandingPage> {
                           ],
                       );
                   } else {
-                      return ListView.builder(
+                      return GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: axisCount,
+                          ),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (_, index) => Card(
                             child: InkWell(
                               onTap: () {
-                                // Navigator.push(context, 
-                                //     MaterialPageRoute(builder: (context) => ));
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                      margin: const EdgeInsets.all(25.0),
+                                      height: MediaQuery.of(context).size.height / 2,
+                                      width: MediaQuery.of(context).size.width * 2,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          SingleChildScrollView(
+                                            child: Text("${snapshot.data![index].fields.description}"),
+                                          ),
+                                          ElevatedButton(onPressed: () {}, child: const Text("Pinjam")),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                               child: Container(
                                     margin: const EdgeInsets.symmetric(
@@ -129,23 +224,26 @@ class _LandingPageState extends State<LandingPage> {
                                       children: [ Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
+                                                Image.network(
+                                                  "${snapshot.data![index].fields.image}", 
+                                                  width: 200
+                                                ),
                                                 Text(
                                                 "${snapshot.data![index].fields.title}",
+                                                textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     fontSize: 18.0,
                                                     fontWeight: FontWeight.bold,
                                                 ),
                                                 ),
-                                                const SizedBox(height: 10),
+                                                const SizedBox(height: 10), 
                                                 Text(
-                                                "${snapshot.data![index].fields.author}"),
+                                                "${snapshot.data![index].fields.author}",
+                                                textAlign: TextAlign.center,
+                                                ),
                                                 const SizedBox(height: 10),
-                                                Text(
-                                                "${snapshot.data![index].fields.description}"
-                                                )
                                               ]
                                             ),
-                                          
                                         ],
                                     ),
                                 )),
@@ -155,109 +253,9 @@ class _LandingPageState extends State<LandingPage> {
                   }
                 }
               ),
-            )
-        ],
-        )
-      
-      
-      // SingleChildScrollView(  
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(10.0),
-      //     child: Column(
-      //       children: <Widget>[
-      //         const Padding(
-      //           padding: EdgeInsets.only(top: 50.0, bottom: 10.0),
-      //           child: Column(
-      //             children: [
-      //               Text(
-      //                 "LiteraPhile",
-      //                 textAlign: TextAlign.center,
-      //                 style: TextStyle(
-      //                   fontSize: 30,
-      //                   fontWeight: FontWeight.bold,
-      //                 ),
-      //               ),
-      //               SizedBox(height: 20),
-      //               Text(
-      //                 "Fasilkom's #1 Book Lending App",
-      //                 textAlign: TextAlign.center,
-      //                 style: TextStyle(
-      //                   fontSize: 15,
-      //                   fontWeight: FontWeight.normal,
-      //                 ),
-      //               ),
-      //               SizedBox(height: 50),
-      //             ],
-      //           )
-      //         ),
-
-              // GridView.count(
-              //   // Container pada card kita.
-              //   primary: true,
-              //   padding: const EdgeInsets.all(20),
-              //   crossAxisSpacing: 10,
-              //   mainAxisSpacing: 10,
-              //   crossAxisCount: axisCount,
-              //   shrinkWrap: true,
-              //   children: books.map((BookItem book) {
-              //     // Iterasi untuk setiap item
-              //     return BookCard(book);
-              //   }).toList(),
-              // ),
-              
-          
-        );
-  }
-}
-
-class BookItem {
-  final String name;
-  final IconData icon;
-
-  BookItem(this.name, this.icon);
-}
-
-class BookCard extends StatelessWidget {
-  final BookItem book;
-
-  const BookCard(this.book, {super.key}); // Constructor
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.indigo,
-      child: InkWell(
-        // Area responsive terhadap sentuhan
-        onTap: () {
-          // Memunculkan SnackBar ketika diklik
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("Kamu telah menekan tombol ${book.name}!")));
-        },
-        child: Container(
-          // Container untuk menyimpan Icon dan Text
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  book.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  book.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
             ),
-          ),
-        ),
-      ),
+          ],
+      )
     );
   }
 }
