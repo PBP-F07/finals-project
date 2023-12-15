@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:literaphile/screens/admin_page/manage_books.dart';
+import 'package:literaphile/screens/admin_page/see_users.dart';
+import 'package:literaphile/screens/admin_page/wish_req.dart';
 import 'package:literaphile/widgets/admin_drawer.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
-import 'package:literaphile/models/books.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class AdminPage extends StatefulWidget {
     const AdminPage({Key? key}) : super(key: key);
@@ -12,19 +15,31 @@ class AdminPage extends StatefulWidget {
 }
 
 class _AdminPageState extends State<AdminPage> {
+  int numberOfBooks = 0;
 
-  Future<List<Book>> fetchBooks() async {
-    final request = context.watch<CookieRequest>();
-    var response = await request.get('https://literaphile-f07-tk.pbp.cs.ui.ac.id/get_books/');
-    var books = response;
+  Future<void> fetchBooks() async {
+    final response = await http.get(Uri.parse('http://localhost:8000/administrator/get-allbooks-mobile/'));
 
-    List<Book> listBooks = [];
-    for (var b in books) {
-      if (b != null) {
-        listBooks.add(Book.fromJson(b));
-      }
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      final List<dynamic> booksList = jsonDecode(jsonData['books']);
+
+      // Get the number of books
+      setState(() {
+        numberOfBooks = booksList.length;
+      });
+
+      // debugPrint('Number of books: $numberOfBooks');
+
+    } else {
+      print('Failed to fetch books. Error: ${response.statusCode}');
     }
-    return listBooks;
+  }
+
+  @override
+  void initState() {
+    fetchBooks();
+    super.initState();
   }
 
   @override
@@ -66,7 +81,7 @@ class _AdminPageState extends State<AdminPage> {
                 duration: const Duration(milliseconds: 500),
                 child: TweenAnimationBuilder<int>(
                   duration: const Duration(milliseconds: 500),
-                  tween: IntTween(begin: 0, end: 100),
+                  tween: IntTween(begin: 0, end: numberOfBooks),
                   builder: (BuildContext context, int value, Widget? child) {
                     return Stack(
                       children: [
@@ -88,7 +103,7 @@ class _AdminPageState extends State<AdminPage> {
                         Container(
                           width: double.infinity,
                           height: 200.0,
-                          color: Colors.black.withOpacity(0.5), // Dark shade overlay
+                          color: Colors.black.withOpacity(0.75), // Dark shade overlay
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -153,12 +168,18 @@ class _AdminPageState extends State<AdminPage> {
                   ElevatedButton(
                     onPressed: () {
                       // Add functionality for the first button
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const UsersPage()),
+                        (route) => false,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       padding: const EdgeInsets.all(16.0),
+                      backgroundColor: const Color(0xFFB0BEC5)
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -166,6 +187,7 @@ class _AdminPageState extends State<AdminPage> {
                         Icon(
                           Icons.person_search,
                           size: 32.0,
+                          color: Colors.black,
                         ),
 
                         SizedBox(width: 5.0),
@@ -174,6 +196,7 @@ class _AdminPageState extends State<AdminPage> {
                           'See Users',
                           style: TextStyle(
                             fontSize: 20.0,
+                            color: Colors.black
                           ),
                           textAlign: TextAlign.center,
                         )
@@ -184,12 +207,18 @@ class _AdminPageState extends State<AdminPage> {
                   ElevatedButton(
                     onPressed: () {
                       // Add functionality for the second button
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const WishlistRequest()),
+                        (route) => false,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       padding: const EdgeInsets.all(16.0),
+                      backgroundColor: const Color(0xFFB0BEC5)
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -197,6 +226,7 @@ class _AdminPageState extends State<AdminPage> {
                         Icon(
                           Icons.bookmark_add,
                           size: 32.0,
+                          color: Colors.black,
                         ),
 
                         SizedBox(width: 5.0),
@@ -205,6 +235,7 @@ class _AdminPageState extends State<AdminPage> {
                           'Wishlist Requests',
                           style: TextStyle(
                             fontSize: 20.0,
+                            color: Colors.black
                           ),
                           textAlign: TextAlign.center,
                         )
@@ -215,12 +246,18 @@ class _AdminPageState extends State<AdminPage> {
                   ElevatedButton(
                     onPressed: () {
                       // Add functionality for the third button
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ManageBooks()),
+                        (route) => false,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       padding: const EdgeInsets.all(16.0),
+                      backgroundColor: const Color(0xFFB0BEC5)
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -228,6 +265,7 @@ class _AdminPageState extends State<AdminPage> {
                         Icon(
                           Icons.library_books,
                           size: 32.0,
+                          color: Colors.black,
                         ),
 
                         SizedBox(width: 5.0),
@@ -236,6 +274,7 @@ class _AdminPageState extends State<AdminPage> {
                           'Manage Books',
                           style: TextStyle(
                             fontSize: 20.0,
+                            color: Colors.black
                           ),
                           textAlign: TextAlign.center,
                         )
@@ -252,6 +291,7 @@ class _AdminPageState extends State<AdminPage> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       padding: const EdgeInsets.all(16.0),
+                      backgroundColor: const Color(0xFFB0BEC5)
                     ),
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -259,6 +299,7 @@ class _AdminPageState extends State<AdminPage> {
                         Icon(
                           Icons.notes,
                           size: 32.0,
+                          color: Colors.black,
                         ),
 
                         SizedBox(width: 5.0),
@@ -267,6 +308,7 @@ class _AdminPageState extends State<AdminPage> {
                           'User Notes',
                           style: TextStyle(
                             fontSize: 20.0,
+                            color: Colors.black
                           ),
                           textAlign: TextAlign.center,
                         )
