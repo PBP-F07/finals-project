@@ -16,6 +16,7 @@ class WishlistPage extends StatefulWidget {
 
 class _WishlistPageState extends State<WishlistPage> {
   final _formKey = GlobalKey<FormState>();
+<<<<<<< HEAD
   String _name = "";
 
   Future<List<Wishlist>> fetchProduct() async {
@@ -55,6 +56,10 @@ class _WishlistPageState extends State<WishlistPage> {
   }
 }
 
+=======
+  final String _name = "";
+  // TODO: Lanjutin dong aokwakowkoawok
+>>>>>>> dfd2d039d20f635a3d4e858b9b9a5f7be72e4b8d
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +69,7 @@ class _WishlistPageState extends State<WishlistPage> {
         foregroundColor: Color.fromARGB(255, 131, 15, 15),
       ),
       drawer: const LeftDrawer(),
+<<<<<<< HEAD
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -73,6 +79,22 @@ class _WishlistPageState extends State<WishlistPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AddWishlistPage(),
+=======
+      body: const SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Text(
+                  'WishList',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+>>>>>>> dfd2d039d20f635a3d4e858b9b9a5f7be72e4b8d
                 ),
               );
             },
