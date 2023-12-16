@@ -109,7 +109,7 @@ class _AdminPageState extends State<AdminPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
-                                  'The database has',
+                                  'Database memiliki',
                                   style: TextStyle(
                                     fontSize: 30.0,
                                     color: Colors.white,
@@ -119,7 +119,7 @@ class _AdminPageState extends State<AdminPage> {
                                 const SizedBox(height: 10), // Spacer between texts
 
                                 Text(
-                                  '$value Books',
+                                  '$value Buku',
                                   style: const TextStyle(
                                     fontSize: 50.0,
                                     fontWeight: FontWeight.bold,
