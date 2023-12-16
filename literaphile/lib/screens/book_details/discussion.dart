@@ -1,4 +1,4 @@
-import 'package:literaphile/models/book_details.dart';
+import 'package:literaphile/models/discussion.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

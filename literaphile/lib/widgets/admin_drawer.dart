@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:literaphile/models/wishlist.dart';
 import 'package:literaphile/screens/admin_page/admin_main.dart';
+import 'package:literaphile/screens/admin_page/see_users.dart';
+import 'package:literaphile/screens/admin_page/wish_req.dart';
 import 'package:literaphile/screens/login.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -69,6 +72,35 @@ class AdminDrawer extends StatelessWidget {
                     );
                   },
                 ),
+
+                ListTile(
+                  leading: const Icon(Icons.person_search),
+                  title: const Text('See Users'),
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UsersPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
+
+                ListTile(
+                  leading: const Icon(Icons.bookmark_add),
+                  title: const Text('Wishlist Request'),
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const WishlistRequest(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
+
               ],
             ),
           ),
