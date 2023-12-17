@@ -44,94 +44,220 @@ class _DiscussionPageState extends State<DiscussionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Product'),
-      ),
-      backgroundColor: Color(0xffb4c5e4), // Set the background color here
-      body: Container(
-        padding: EdgeInsets.fromLTRB(17 * fem, 39 * fem, 17 * fem, 230 * fem),
-        width: double.infinity,
-        height: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: FutureBuilder(
-                future: fetchProduct(),
-                builder: (context, AsyncSnapshot<List<Discussion>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        "Error: ${snapshot.error}",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    );
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        "Tidak ada data diskusi.",
-                        style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                    );
-                  } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 87 * fem,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10 * fem),
-                                border: Border.all(color: Color(0xff3c3744)),
-                                color: Color(0xfffbfff1),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "${snapshot.data![index].fields.user}",
-                                        style: const TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text("${snapshot.data![index].fields.comment}"),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
+        appBar: AppBar(
+          title: const Text('Product'),
         ),
-      ),
-    );
+        backgroundColor: const Color(0xffb4c5e4),
+        body: FutureBuilder(
+            future: fetchProduct(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (!snapshot.hasData) {
+                  return const Column(
+                    children: [
+                      Text(
+                        "Tidak ada data diskusi.",
+                        style:
+                        TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) {
+                        if("${snapshot.data![index].fields.user}" == "zaim1"){
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 0),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: double.infinity,
+                                    height: 130 * fem,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10 * fem),
+                                      border: Border.all(color: Color(0xff3c3744)),
+                                      color: Color(0xfffbfff1),
+                                    ),
+                                    child:Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                              width: 30,
+                                              height: 30,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${snapshot.data![index].fields.user}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  "${snapshot.data![index].fields.comment}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text("${snapshot.data![index].fields.dateAdded}",
+                                                  style: const TextStyle(
+                                                    fontSize: 10.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                MaterialStateProperty.all(const Color(0xFF090C9B)),
+                                              ),
+                                              child: const Text("Reply",
+                                                style: TextStyle(
+                                                  fontSize: 10.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onPressed: (){},
+                                            ),
+                                            ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                MaterialStateProperty.all(const Color(0xFF090C9B)),
+                                              ),
+                                              child: const Text("Delete",
+                                                style: TextStyle(
+                                                  fontSize: 10.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onPressed: (){},
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 0),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    width: double.infinity,
+                                    height: 130 * fem,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10 * fem),
+                                      border: Border.all(color: Color(0xff3c3744)),
+                                      color: Color(0xfffbfff1),
+                                    ),
+                                    child:Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                              width: 30,
+                                              height: 30,
+                                            ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${snapshot.data![index].fields.user}",
+                                                  style: const TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  "${snapshot.data![index].fields.comment}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15.0,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text("${snapshot.data![index].fields.dateAdded}",
+                                                  style: const TextStyle(
+                                                    fontSize: 10.0,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        ),
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                MaterialStateProperty.all(const Color(0xFF090C9B)),
+                                              ),
+                                              child: const Text("Reply",
+                                                style: TextStyle(
+                                                  fontSize: 10.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              onPressed: (){},
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                      }
+                  );
+                }
+              }
+            }));
   }
 }
