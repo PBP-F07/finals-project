@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:literaphile/models/books.dart';
+import 'package:literaphile/models/admin_books.dart';
 import 'dart:convert';
 import 'package:literaphile/widgets/admin_drawer.dart';
 
@@ -17,7 +17,7 @@ class _ManageBooksState extends State<ManageBooks> {
   TextEditingController searchController = TextEditingController();
 
   Future<void> fetchBooks() async {
-    final response = await http.get(Uri.parse('http://localhost:8000/administrator/get-allbooks-mobile/'));
+    final response = await http.get(Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-allbooks-mobile/'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = jsonDecode(response.body);
@@ -35,7 +35,7 @@ class _ManageBooksState extends State<ManageBooks> {
   }
 
   Future<void> deleteBook(int id) async {
-    final url = Uri.parse('http://localhost:8000/administrator/managebooks/delete-book/$id');
+    final url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/managebooks/delete-book/$id');
     
     try {
       final response = await http.delete(url);
@@ -53,7 +53,7 @@ class _ManageBooksState extends State<ManageBooks> {
 
   Future<void> searchBooks(String? query) async {
     final response = await http.get(
-      Uri.parse('http://localhost:8000/administrator/get-search-title-mobile/?title=$query'),
+      Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-search-title-mobile/?title=$query'),
     );
 
     // debugPrint('$query IS THE QUERY');
