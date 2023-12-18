@@ -160,18 +160,18 @@ class _AdminPageState extends State<AdminPage> {
               GridView.count(
                 shrinkWrap: true,
                 crossAxisCount: 2,
-                padding: const EdgeInsets.all(16.0),
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
+                padding: const EdgeInsets.all(16.0),
                 children: [
 
                   ElevatedButton(
                     onPressed: () {
-                      // Add functionality for the first button
+                      // Functionality for 'See Users' button
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => const UsersPage()),
-                        (route) => false,
+                        (route) => false
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -189,28 +189,26 @@ class _AdminPageState extends State<AdminPage> {
                           size: 32.0,
                           color: Colors.black,
                         ),
-
-                        SizedBox(width: 5.0),
-
+                        SizedBox(height: 5.0),
                         Text(
                           'See Users',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black
+                            fontSize: 16.0,
+                            color: Colors.black,
                           ),
                           textAlign: TextAlign.center,
-                        )
+                        ),
                       ],
                     ),
                   ),
 
                   ElevatedButton(
                     onPressed: () {
-                      // Add functionality for the second button
+                      // Functionality for 'Wishlist Requests' button
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => const WishlistRequest()),
-                        (route) => false,
+                        (route) => false
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -228,95 +226,62 @@ class _AdminPageState extends State<AdminPage> {
                           size: 32.0,
                           color: Colors.black,
                         ),
-
-                        SizedBox(width: 5.0),
-
+                        SizedBox(height: 5.0),
                         Text(
                           'Wishlist Requests',
                           style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black
+                            fontSize: 16.0,
+                            color: Colors.black,
                           ),
                           textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  ),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      // Add functionality for the third button
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ManageBooks()),
-                        (route) => false,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: const EdgeInsets.all(16.0),
-                      backgroundColor: const Color(0xFFB0BEC5)
-                    ),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.library_books,
-                          size: 32.0,
-                          color: Colors.black,
                         ),
-
-                        SizedBox(width: 5.0),
-
-                        Text(
-                          'Manage Books',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black
-                          ),
-                          textAlign: TextAlign.center,
-                        )
                       ],
                     ),
                   ),
 
-                  ElevatedButton(
-                    onPressed: () {
-                      // Add functionality for the fourth button
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: const EdgeInsets.all(16.0),
-                      backgroundColor: const Color(0xFFB0BEC5)
-                    ),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.notes,
-                          size: 32.0,
-                          color: Colors.black,
-                        ),
-
-                        SizedBox(width: 5.0),
-
-                        Text(
-                          'User Notes',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                  ),
-                  
                 ],
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  // Functionality for 'Manage Books' button
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ManageBooks()),
+                    (route) => false,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: const EdgeInsets.only(
+                    top: 65.0,
+                    bottom: 65.0,
+                    left: 35.0,
+                    right: 35.0
+                  ),
+                  backgroundColor: const Color(0xFFB0BEC5)
+                ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.library_books,
+                      size: 32.0,
+                      color: Colors.black,
+                    ),
+                    SizedBox(height: 5.0),
+                    Text(
+                      'Manage Books',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
 
             ],

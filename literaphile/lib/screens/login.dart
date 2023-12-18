@@ -3,6 +3,7 @@ import 'package:literaphile/screens/admin_page/admin_main.dart';
 import 'package:flutter/material.dart';
 import 'package:literaphile/menu.dart';
 import 'package:literaphile/screens/landingPage/landing.dart';
+import 'package:literaphile/screens/register.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -130,6 +131,20 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: const Text('Login'),
             ),
+
+            const SizedBox(height: 16.0),
+
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to register page when 'Register' button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterPage()),
+                );
+              },
+              child: const Text('Register'),
+            ),
+            
           ],
         ),
       ),
