@@ -3,6 +3,8 @@ import 'package:literaphile/screens/landingPage/rightDrawer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:literaphile/models/books.dart';
+import 'package:literaphile/screens/wishlist_page/wishlist.dart';
+import 'package:literaphile/widgets/left_drawer.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -13,7 +15,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   
-  List<Books> listBooks = [];
+  List<Book> listBooks = [];
 
   @override
   void initState() {
@@ -23,18 +25,18 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void updateBooks(String searchTitle) async {
-    List<Books> books = await fetchBooks(searchTitle);
+    List<Book> books = await fetchBooks(searchTitle);
     setState(() {
       listBooks = books;
     });
   }
 
-  Future<List<Books>> fetchBooks(String searchTitle) async {
+  Future<List<Book>> fetchBooks(String searchTitle) async {
     var url = Uri.parse(
-        'http://localhost:8000/get_books/');
+        'https://literaphile-f07-tk.pbp.cs.ui.ac.id/get_books/');
 
     if (searchTitle.isNotEmpty) {
-      url = Uri.parse('http://localhost:8000/search_books_static/?search_title=$searchTitle');
+      url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/search_books_static/?search_title=$searchTitle');
     } 
 
     var response = await http.get(
@@ -47,10 +49,10 @@ class _LandingPageState extends State<LandingPage> {
 
     // melakukan konversi data json menjadi object Product
     
-    List<Books> listBooksMain = [];
+    List<Book> listBooksMain = [];
     for (var d in data) {
         if (d != null) {
-            listBooksMain.add(Books.fromJson(d));
+            listBooksMain.add(Book.fromJson(d));
         }
     }
     return listBooksMain;
@@ -83,7 +85,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
         ),
       ),
-      endDrawer: const RightDrawer(),
+      drawer: const LeftDrawer(),
       body: Column(
         children: [
           Padding(
@@ -114,7 +116,12 @@ class _LandingPageState extends State<LandingPage> {
                       SizedBox(
                         width: screenWidth - (screenWidth / 2) - 20,
                         child: ElevatedButton(
-                          onPressed: () {}, 
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const WishlistPage()),
+                            );
+                          }, 
                           child: const Text("Tambahkan Wishlist", textAlign: TextAlign.center,)
                         ),
                       ),
@@ -178,130 +185,110 @@ class _LandingPageState extends State<LandingPage> {
               )
             ),
             Expanded(
-              child: FutureBuilder(
-                future: fetchBooks(searchName), 
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.data == null) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                      if (!snapshot.hasData) {
-                      return const Column(
-                          children: [
-                          Text(
-                              "Tidak ada data buku.",
-                              style:
-                                  TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                          ),
-                          SizedBox(height: 8),
-                          ],
-                      );
-                  } else {
-                      return GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: axisCount,
-                          ),
-                          itemCount: listBooks.length,
-                          itemBuilder: (context, index) => Container(
-                            width: screenWidth / axisCount,
-                            height: screenWidth / axisCount,
-                            margin: const EdgeInsets.all(5.0),
-                            child: Card(
-                            child: InkWell(
-                              onTap: () {
-                                showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                      margin: const EdgeInsets.all(25.0),
-                                      height: MediaQuery.of(context).size.height / 2,
-                                      width: MediaQuery.of(context).size.width * 2,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: SingleChildScrollView(
-                                              child: Container(
-                                                padding: const EdgeInsets.all(16),
-                                                child: Text(
-                                                  listBooks[index].fields.description,
-                                                  style: const TextStyle(fontSize: 16),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                  "Available : ${listBooks[index].fields.amount}",
-                                                  style: const TextStyle(fontSize: 16),
-                                              ),
-                                              const SizedBox(width: 10),
-                                              ElevatedButton(
-                                                onPressed: () {},
-                                                child: const Text("Pinjam"),
-                                              ),
-                                            ],
-                                          )
-                                        ],
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: axisCount,
+                ),
+                itemCount: listBooks.length,
+                itemBuilder: (context, index) => Container(
+                  width: screenWidth / axisCount,
+                  height: screenWidth / axisCount,
+                  margin: const EdgeInsets.all(5.0),
+                  child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            margin: const EdgeInsets.all(25.0),
+                            height: MediaQuery.of(context).size.height / 2,
+                            width: MediaQuery.of(context).size.width * 2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        listBooks[index].fields.description,
+                                        style: const TextStyle(fontSize: 16),
                                       ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 12),
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [ Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Image.network(
-                                                    listBooks[index].fields.image,
-                                                    height: 200,
-                                                    width: 300,
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    listBooks[index].fields.title,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    listBooks[index].fields.author,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(fontSize: 16), // Adjust the font size as needed
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  Text(
-                                                    listBooks[index].fields.yearOfRelease,
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(fontSize: 16), // Adjust the font size as needed
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                ]
-                                              ),
-                                          ],
-                                      ),
-                                    )
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        "Available : ${listBooks[index].fields.amount}",
+                                        style: const TextStyle(fontSize: 16),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        
+                                      },
+                                      child: const Text("Pinjam"),
+                                    ),
+                                  ],
                                 )
-                              ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(20.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [ Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.network(
+                                          listBooks[index].fields.image,
+                                          height: 200,
+                                          width: 300,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          listBooks[index].fields.title,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          listBooks[index].fields.author,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 16), // Adjust the font size as needed
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          listBooks[index].fields.yearOfRelease,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 16), // Adjust the font size as needed
+                                        ),
+                                        const SizedBox(height: 10),
+                                      ]
+                                    ),
+                                ],
                             ),
                           )
-                        ); 
-                      }
-                  }
-                }
-              ),
+                      )
+                    ),
+                  ),
+                )
+              )
             ),
           ],
       )
