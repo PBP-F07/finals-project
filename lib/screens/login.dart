@@ -137,11 +137,10 @@ class _LoginPageState extends State<LoginPage> {
                 // 'password': password,
                 // });
 
-                                final response = await request.login("https://literaphile-f07-tk.pbp.cs.ui.ac.id/login/", {
-                                'username': username,
-                                'password': password,
-                                });
-
+                final response = await request.login("https://literaphile-f07-tk.pbp.cs.ui.ac.id/login/", {
+                'username': username,
+                'password': password,
+                });
 
                 // username: test_user_vinc, password: HelloWorld123
                 if (request.loggedIn) {
