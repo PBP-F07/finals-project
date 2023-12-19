@@ -1,3 +1,5 @@
+[![Build status](https://build.appcenter.ms/v0.1/apps/90459430-3f13-4614-9bde-9d6a5049800f/branches/main/badge)](https://appcenter.ms)
+
 # Tahap I Proyek Akhir Semester
 ## Daftar Nama Anggota Kelompok
 1. Devandra Reswara Arkananta (2206083552)
