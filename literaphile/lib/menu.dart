@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'screens/wishlist_page/wishlist.dart';
 // import 'package:literaphile/screens/wishlist_page/
+import 'screens/book_details/book_details.dart';
+import 'package:literaphile/screens/wishlist_page/wishlist-main.dart';
+
 
 
 // import 'package:literaphile/screens/wishlist_page/wishlist-main.dart';
@@ -11,6 +14,7 @@ class MyHomePage extends StatelessWidget {
     LiteraphileItem("Daftar Buku", Icons.book),
     LiteraphileItem("Wishlist", Icons.list_alt),
     LiteraphileItem("User Dashboard", Icons.settings),
+    LiteraphileItem("Coba Comment", Icons.add_circle),
   ];
 
   @override

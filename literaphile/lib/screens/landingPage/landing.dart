@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:literaphile/models/books.dart';
 import 'package:literaphile/screens/wishlist_page/wishlist.dart';
 import 'package:literaphile/widgets/left_drawer.dart';
+import 'package:literaphile/screens/book_details/book_details.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -36,7 +37,7 @@ class _LandingPageState extends State<LandingPage> {
         'https://literaphile-f07-tk.pbp.cs.ui.ac.id/get_books/');
 
     if (searchTitle.isNotEmpty) {
-      url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/search_books_static/?search_title=$searchTitle');
+      url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/?search_title=$searchTitle');
     } 
 
     var response = await http.get(
@@ -220,6 +221,7 @@ class _LandingPageState extends State<LandingPage> {
                                   ),
                                 ),
                                 Row(
+
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -233,8 +235,25 @@ class _LandingPageState extends State<LandingPage> {
                                       },
                                       child: const Text("Pinjam"),
                                     ),
+
                                   ],
-                                )
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all(const Color(0xFF090C9B)),
+                                  ),
+                                  child: const Text("Discussion",
+                                    style: TextStyle(
+                                      fontSize: 10.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onPressed: (){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => DiscussionPage(bookId: listBooks[index].pk, book: listBooks[index],)));
+                                  },
+                                ),
                               ],
                             ),
                           );
@@ -279,6 +298,7 @@ class _LandingPageState extends State<LandingPage> {
                                           style: const TextStyle(fontSize: 16), // Adjust the font size as needed
                                         ),
                                         const SizedBox(height: 10),
+
                                       ]
                                     ),
                                 ],
