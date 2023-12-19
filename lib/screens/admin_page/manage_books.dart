@@ -39,7 +39,6 @@ class _ManageBooksState extends State<ManageBooks> {
     
     try {
       final response = await http.delete(url);
-      
       if (response.statusCode == 200) {
         // debugPrint('Wishlist item rejected successfully');
         await fetchBooks();
