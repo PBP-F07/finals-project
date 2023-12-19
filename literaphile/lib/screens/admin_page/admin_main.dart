@@ -18,7 +18,7 @@ class _AdminPageState extends State<AdminPage> {
   int numberOfBooks = 0;
 
   Future<void> fetchBooks() async {
-    final response = await http.get(Uri.parse('http://localhost:8000/administrator/get-allbooks-mobile/'));
+    final response = await http.get(Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-allbooks-mobile/'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = jsonDecode(response.body);
@@ -109,7 +109,7 @@ class _AdminPageState extends State<AdminPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text(
-                                  'The database has',
+                                  'Database memiliki',
                                   style: TextStyle(
                                     fontSize: 30.0,
                                     color: Colors.white,
@@ -119,7 +119,7 @@ class _AdminPageState extends State<AdminPage> {
                                 const SizedBox(height: 10), // Spacer between texts
 
                                 Text(
-                                  '$value Books',
+                                  '$value Buku',
                                   style: const TextStyle(
                                     fontSize: 50.0,
                                     fontWeight: FontWeight.bold,

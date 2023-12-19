@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/wishlist_page/wishlist.dart';
 // import 'package:literaphile/screens/wishlist_page/
-import 'screens/book_details/discussion.dart';
+import 'screens/book_details/book_details.dart';
 import 'package:literaphile/screens/wishlist_page/wishlist-main.dart';
 
 
@@ -59,11 +59,6 @@ class MyHomePage extends StatelessWidget {
                     if (item.feature == "Wishlist") {
                       Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const WishlistPage()));
-                    }
-
-                    if (item.feature == "Coba Comment") {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const DiscussionPage(bookId: 9515)));
                     }
                   },
                   icon: Icon(item.icon),

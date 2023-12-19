@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:literaphile/models/books.dart';
+import 'package:literaphile/models/admin_books.dart';
 import 'dart:convert';
 import 'package:literaphile/widgets/admin_drawer.dart';
 
@@ -14,9 +14,10 @@ class ManageBooks extends StatefulWidget {
 class _ManageBooksState extends State<ManageBooks> {
   List<Book> books = [];
   bool isPressed = false;
+  TextEditingController searchController = TextEditingController();
 
   Future<void> fetchBooks() async {
-    final response = await http.get(Uri.parse('http://localhost:8000/administrator/get-allbooks-mobile/'));
+    final response = await http.get(Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-allbooks-mobile/'));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = jsonDecode(response.body);
@@ -34,7 +35,7 @@ class _ManageBooksState extends State<ManageBooks> {
   }
 
   Future<void> deleteBook(int id) async {
-    final url = Uri.parse('http://localhost:8000/administrator/managebooks/delete-book/$id');
+    final url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/managebooks/delete-book/$id');
     
     try {
       final response = await http.delete(url);
@@ -48,6 +49,33 @@ class _ManageBooksState extends State<ManageBooks> {
     } catch (error) {
       print('Error rejecting wishlist item: $error');
     }
+  }
+
+  Future<void> searchBooks(String? query) async {
+    final response = await http.get(
+      Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-search-title-mobile/?title=$query'),
+    );
+
+    // debugPrint('$query IS THE QUERY');
+
+    if (response.statusCode == 200) {
+
+      final Map<String, dynamic> jsonData = jsonDecode(response.body);
+      final String searchJson = jsonData['books'];
+
+      final List<dynamic> searchData = jsonDecode(searchJson);
+      
+      // debugPrint(searchBooks.toString());
+
+      setState(() {
+        books = bookFromJson(jsonEncode(searchData));
+      });
+
+      // await fetchBooks();
+    } else {
+      print('Error searching books: ${response.statusCode}');
+    }
+
   }
 
   @override
@@ -87,92 +115,123 @@ class _ManageBooksState extends State<ManageBooks> {
               ),
             )
           ],
-        )
+        ),
       ),
 
-      body: books.isEmpty
-        ? Container(
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height,
-            child: const Center(
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Search by title',
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    String title = searchController.text.trim();
+                    if (title.isNotEmpty) {
+                      searchBooks(title);
+                    } else {
+                      print('Search query is empty!');
+                    }
+                  },
+                  icon: const Icon(Icons.search),
+                ),
+              ),
+              onSubmitted: (value) {
+                searchBooks(value);
+              },
+            ),
+          ),
+
+          Expanded(
+            child: books.isEmpty
+            ? Container(
+                alignment: Alignment.center,
+                height: MediaQuery.of(context).size.height,
+                child: const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.inbox_rounded,
+                        size: 64.0,
+                        color: Colors.grey,
+                      ),
+                      Text(
+                        'Tidak ada buku di database . . .',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.inbox_rounded,
-                    size: 64.0,
-                    color: Colors.grey,
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: books.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final currentWishlist = books[index];
+
+                      return SizedBox(
+                        child: ListTile(
+                          leading: SizedBox(
+                            child: Image.network(
+                              currentWishlist.fields.image,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: Text(
+                            currentWishlist.fields.title,
+                            style: const TextStyle(
+                              fontSize: 18.0, // Adjust font size as needed
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          subtitle: Text(
+                            '${currentWishlist.fields.author} (${currentWishlist.fields.yearOfRelease})',
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  deleteBook(currentWishlist.pk);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Buku "${currentWishlist.fields.title}" telah dihapus!'),
+                                      duration: const Duration(seconds: 3), // Duration to display the SnackBar
+                                      behavior: SnackBarBehavior.floating, // Make the SnackBar floating
+                                      margin: const EdgeInsets.all(16.0), // Adjust margin as needed
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8.0), // Optional: customize SnackBar shape
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.delete),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  Text(
-                    'Tidak ada buku di database . . .',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
+                ],  
               ),
             ),
           )
-        : SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: books.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final currentWishlist = books[index];
-
-                    return SizedBox(
-                      child: ListTile(
-                        leading: SizedBox(
-                          child: Image.network(
-                            currentWishlist.fields.image,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        title: Text(
-                          currentWishlist.fields.title,
-                          style: const TextStyle(
-                            fontSize: 18.0, // Adjust font size as needed
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                          '${currentWishlist.fields.author} (${currentWishlist.fields.yearOfRelease})',
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                deleteBook(currentWishlist.pk);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Buku "${currentWishlist.fields.title}" telah dihapus!'),
-                                    duration: const Duration(seconds: 3), // Duration to display the SnackBar
-                                    behavior: SnackBarBehavior.floating, // Make the SnackBar floating
-                                    margin: const EdgeInsets.all(16.0), // Adjust margin as needed
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0), // Optional: customize SnackBar shape
-                                    ),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(Icons.delete),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],  
-            ),
-          ),
+        ]
+      ),
+      
 
       // DRAWER BUTTON
       floatingActionButton: GestureDetector(

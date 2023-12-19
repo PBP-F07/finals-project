@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:literaphile/screens/landingPage/landing.dart';
 import 'package:literaphile/screens/menu.dart';
 import 'package:literaphile/screens/wishlist_page/wishlist.dart';
 import 'package:literaphile/screens/dashboard_page/dashboard.dart';
@@ -47,7 +48,7 @@ class LeftDrawer extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const MyHomePage(),
+                  builder: (context) => const LandingPage(),
                 ),
               );
             },

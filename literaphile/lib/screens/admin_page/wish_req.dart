@@ -17,7 +17,7 @@ class _WishlistRequestState extends State<WishlistRequest> {
   bool isPressed = false;
 
   Future<void> fetchWishlistItems() async {
-    final response = await http.get(Uri.parse('http://localhost:8000/administrator/get-wishlist-mobile/'));
+    final response = await http.get(Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-wishlist-mobile/'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonData = jsonDecode(response.body);
       final String wishlistJson = jsonData['wishlist'];
@@ -34,7 +34,7 @@ class _WishlistRequestState extends State<WishlistRequest> {
   }
 
   Future<void> rejectWishlistItem(int id) async {
-    final url = Uri.parse('http://localhost:8000/administrator/reject-wishlist/$id');
+    final url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/reject-wishlist/$id');
     
     try {
       final response = await http.delete(url);
@@ -51,7 +51,7 @@ class _WishlistRequestState extends State<WishlistRequest> {
   }
 
   Future<void> addToCatalog(int id) async {
-    final url = Uri.parse('http://localhost:8000/administrator/add-catalog/$id');
+    final url = Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/add-catalog/$id');
 
     try {
       final response = await http.post(url);

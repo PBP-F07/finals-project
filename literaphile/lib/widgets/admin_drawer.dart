@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:literaphile/models/wishlist.dart';
 import 'package:literaphile/screens/admin_page/admin_main.dart';
+import 'package:literaphile/screens/admin_page/manage_books.dart';
 import 'package:literaphile/screens/admin_page/see_users.dart';
 import 'package:literaphile/screens/admin_page/wish_req.dart';
 import 'package:literaphile/screens/login.dart';
@@ -95,6 +95,20 @@ class AdminDrawer extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const WishlistRequest(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
+
+                ListTile(
+                  leading: const Icon(Icons.library_books),
+                  title: const Text('Manage Books'),
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ManageBooks(),
                       ),
                       (route) => false,
                     );
