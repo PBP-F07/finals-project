@@ -65,18 +65,6 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Check Your Books'),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BooksCheckPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
             leading: const Icon(Icons.add_shopping_cart),
             title: const Text('Wishlist'),
             onTap: () {
