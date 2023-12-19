@@ -143,48 +143,49 @@ class _LoginPageState extends State<LoginPage> {
                   'password': password,
                 });
 
-                // Switch to admin page
-                if (username == 'literaphile' && password == 'f07') {
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
+
+                // username: test_user_vinc, password: HelloWorld123
+                if (request.loggedIn) {
+                  String message = response['message'];
+                  String uname = response['username'];
+                  String group = response['group'];
+
+                  if (group == 'admin') {
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const AdminPage()));
-                } else {
-                  // username: test_user_vinc, password: HelloWorld123
-                  if (request.loggedIn) {
-                    String message = response['message'];
-                    String uname = response['username'];
+                      MaterialPageRoute(builder: (context) => const AdminPage()),
+                    );
+                  } else {
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              LandingPage()),
+                          builder: (context) => const LandingPage()),
                     );
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(SnackBar(
                           content: Text("$message Selamat datang, $uname.")));
-                  } else {
-                    // ignore: use_build_context_synchronously
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Login Gagal'),
-                        content: Text(response['message']),
-                        actions: [
-                          TextButton(
-                            child: const Text('OK'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
                   }
+                } else {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Login Gagal'),
+                      content: Text(response['message']),
+                      actions: [
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 }
               },
               child: const Text('Login'),
