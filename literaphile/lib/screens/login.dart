@@ -3,6 +3,7 @@ import 'package:literaphile/screens/admin_page/admin_main.dart';
 import 'package:flutter/material.dart';
 import 'package:literaphile/menu.dart';
 import 'package:literaphile/screens/landingPage/landing.dart';
+import 'package:literaphile/screens/register.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -41,21 +42,77 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
+
       appBar: AppBar(
-        title: const Text('Login'),
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        titleSpacing: 0.0,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            SizedBox(width: 10.0),
+
+            Icon(
+              Icons.book,
+              size: 32.0,
+              color: Colors.white,
+            ),
+
+            SizedBox(width: 10.0),
+
+            Text(
+              'LiteraPhile',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
       ),
+
       body: Container(
         padding: const EdgeInsets.all(16.0),
+
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //     colors: [Color(0xFF04BADE), Color(0xFF55E2E9)],
+        //     stops: [0.3, 0.7],
+        //   ),
+        // ),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
+            const Text(
+              'Literasi untuk Indonesia.',
+              style: TextStyle(
+                fontSize: 25.0,
+              ),
+            ),
+
+            const Text(
+              'Selamat Datang!',
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
             TextField(
               controller: _usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
               ),
             ),
+
             const SizedBox(height: 12.0),
+
             TextField(
               controller: _passwordController,
               decoration: const InputDecoration(
@@ -63,7 +120,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               obscureText: true,
             ),
+
             const SizedBox(height: 24.0),
+
             ElevatedButton(
               onPressed: () async {
                 String username = _usernameController.text;
@@ -83,52 +142,67 @@ class _LoginPageState extends State<LoginPage> {
                                 'password': password,
                                 });
 
-                // Switch to admin page
-                if (username == 'literaphile' && password == 'f07') {
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
+
+                // username: test_user_vinc, password: HelloWorld123
+                if (request.loggedIn) {
+                  String message = response['message'];
+                  String uname = response['username'];
+                  String group = response['group'];
+
+                  if (group == 'admin') {
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const AdminPage()));
-                } else {
-                  // username: test_user_vinc, password: HelloWorld123
-                  if (request.loggedIn) {
-                    String message = response['message'];
-                    String uname = response['username'];
+                      MaterialPageRoute(builder: (context) => const AdminPage()),
+                    );
+                  } else {
                     // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              LandingPage()),
+                          builder: (context) => const LandingPage()),
                     );
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()
                       ..showSnackBar(SnackBar(
                           content: Text("$message Selamat datang, $uname.")));
-                  } else {
-                    // ignore: use_build_context_synchronously
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Login Gagal'),
-                        content: Text(response['message']),
-                        actions: [
-                          TextButton(
-                            child: const Text('OK'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
                   }
+                } else {
+                  // ignore: use_build_context_synchronously
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Login Gagal'),
+                      content: Text(response['message']),
+                      actions: [
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 }
               },
               child: const Text('Login'),
             ),
+
+            const SizedBox(height: 16.0),
+
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to register page when 'Register' button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterPage()),
+                );
+              },
+              child: const Text('Register'),
+            ),
+            
           ],
         ),
       ),

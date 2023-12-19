@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:literaphile/models/books.dart';
 import 'package:literaphile/screens/book_details/discussion.dart';
 import 'package:literaphile/screens/book_details/add_discussion.dart';
+import 'package:literaphile/widgets/left_drawer.dart';
 
 class DiscussionPage extends StatefulWidget {
   final int bookId;
@@ -57,6 +58,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
           foregroundColor: const Color(0xFFFBFFF1) ,
         ),
         backgroundColor: const Color(0xffb4c5e4),
+        drawer: const LeftDrawer(),
         body: SingleChildScrollView(
           child: Column(children: [
             const SizedBox(

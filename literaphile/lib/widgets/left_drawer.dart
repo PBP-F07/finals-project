@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:literaphile/screens/landingPage/landing.dart';
-import 'package:literaphile/screens/menu.dart';
 import 'package:literaphile/screens/wishlist_page/wishlist.dart';
 import 'package:literaphile/screens/dashboard_page/dashboard.dart';
 import 'package:literaphile/screens/dashboard_page/booksCheck.dart';
@@ -61,18 +60,6 @@ class LeftDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const DashboardPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Check Your Books'),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BooksCheckPage(),
                 ),
               );
             },
