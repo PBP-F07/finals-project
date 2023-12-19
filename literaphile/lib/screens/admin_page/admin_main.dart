@@ -16,6 +16,7 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   int numberOfBooks = 0;
+  bool isPressed = false;
 
   Future<void> fetchBooks() async {
     final response = await http.get(Uri.parse('https://literaphile-f07-tk.pbp.cs.ui.ac.id/administrator/get-allbooks-mobile/'));
@@ -73,7 +74,6 @@ class _AdminPageState extends State<AdminPage> {
       ),
 
       body: Container(
-        margin: const EdgeInsets.only(top: 15.0),
         child: Center(
           child: Column(
             children: <Widget>[
@@ -136,7 +136,7 @@ class _AdminPageState extends State<AdminPage> {
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               const Row(
                 children: [
@@ -155,14 +155,19 @@ class _AdminPageState extends State<AdminPage> {
                 ],
               ),
 
-              const SizedBox(height: 15),
+              // const SizedBox(height: 5),
 
               GridView.count(
                 shrinkWrap: true,
                 crossAxisCount: 2,
                 mainAxisSpacing: 16.0,
                 crossAxisSpacing: 16.0,
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                  top: 10.0,
+                  bottom: 10.0,
+                  left: 30.0,
+                  right: 30.0
+                ),
                 children: [
 
                   ElevatedButton(
@@ -178,7 +183,6 @@ class _AdminPageState extends State<AdminPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      padding: const EdgeInsets.all(16.0),
                       backgroundColor: const Color(0xFFB0BEC5)
                     ),
                     child: const Column(
@@ -215,7 +219,6 @@ class _AdminPageState extends State<AdminPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      padding: const EdgeInsets.all(16.0),
                       backgroundColor: const Color(0xFFB0BEC5)
                     ),
                     child: const Column(
@@ -256,10 +259,10 @@ class _AdminPageState extends State<AdminPage> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   padding: const EdgeInsets.only(
-                    top: 65.0,
-                    bottom: 65.0,
-                    left: 35.0,
-                    right: 35.0
+                    top: 50.0,
+                    bottom: 50.0,
+                    left: 100.0,
+                    right: 100.0
                   ),
                   backgroundColor: const Color(0xFFB0BEC5)
                 ),
@@ -290,30 +293,57 @@ class _AdminPageState extends State<AdminPage> {
       ),
       
       // DRAWER BUTTON
-      floatingActionButton: Ink(
-        decoration: const ShapeDecoration(
-          color: Colors.white,
-          shape: CircleBorder(),
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return const AdminDrawer();
+      floatingActionButton: GestureDetector(
+        onTapDown: (_) {
+          setState(() {
+            isPressed = true;
+          });
+        },
+        onTapUp: (_) {
+          setState(() {
+            isPressed = false;
+          });
+        },
+
+        child: AnimatedOpacity(
+          opacity: isPressed ? 1.0 : 0.5,
+          duration: const Duration(milliseconds: 300),
+          child: Ink(
+            decoration: const ShapeDecoration(
+              color: Colors.white,
+              shape: CircleBorder(),
+            ),
+            child: FloatingActionButton(
+              onPressed: () {
+
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const AdminDrawer();
+                  },
+                );
+
+                Future.delayed(const Duration(milliseconds: 200), () {
+                  setState(() {
+                    isPressed = false;
+                  });
+                });
               },
-            );
-          },
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          elevation: 3.0,
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black, width: 2.0),
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          child: const Icon(Icons.arrow_upward),
+
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              elevation: 3.0,
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(color: Colors.black, width: 2.0),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: const Icon(Icons.arrow_upward),
+            ),
+          )
+            
         ),
       ),
+      
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const SizedBox(
         height: 50.0,
