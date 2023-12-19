@@ -79,28 +79,50 @@ class _UsersPageState extends State<UsersPage> {
         )
       ),
 
-      body: Center(
+      // body: Center(
+      //   child: SingleChildScrollView(
+      //     scrollDirection: Axis.horizontal,
+      //     child: SizedBox(
+      //       width: MediaQuery.of(context).size.width, // Set width to screen width
+      //       child: DataTable(
+      //         columns: const [
+      //           DataColumn(label: Text('ID')),
+      //           DataColumn(label: Text('Username')),
+      //           DataColumn(label: Text('Role')),
+      //         ],
+      //         rows: usersData.map((userData) {
+      //           return DataRow(cells: [
+      //             DataCell(Text('${userData['id']}')),
+      //             DataCell(Text(userData['username'] ?? 'N/A')),
+      //             DataCell(Text(userData['role'] ?? 'N/A')),
+      //           ]);
+      //         }).toList(),
+      //       ),
+      //     ),
+      //   ),
+      // ),
+
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width, // Set width to screen width
-            child: DataTable(
-              columns: const [
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('Username')),
-                DataColumn(label: Text('Role')),
-              ],
-              rows: usersData.map((userData) {
-                return DataRow(cells: [
-                  DataCell(Text('${userData['id']}')),
-                  DataCell(Text(userData['username'] ?? 'N/A')),
-                  DataCell(Text(userData['role'] ?? 'N/A')),
-                ]);
-              }).toList(),
-            ),
+          scrollDirection: Axis.vertical,
+          child: DataTable(
+            columns: const [
+              DataColumn(label: Text('ID')),
+              DataColumn(label: Text('Username')),
+              DataColumn(label: Text('Role')),
+            ],
+            rows: usersData.map((userData) {
+              return DataRow(cells: [
+                DataCell(Text('${userData['id']}')),
+                DataCell(Text(userData['username'] ?? 'N/A')),
+                DataCell(Text(userData['role'] ?? 'N/A')),
+              ]);
+            }).toList(),
           ),
         ),
       ),
+
 
       // DRAWER BUTTON
       floatingActionButton: GestureDetector(
