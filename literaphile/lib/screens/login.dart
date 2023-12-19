@@ -42,21 +42,77 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
+
       appBar: AppBar(
-        title: const Text('Login'),
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+        titleSpacing: 0.0,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            SizedBox(width: 10.0),
+
+            Icon(
+              Icons.book,
+              size: 32.0,
+              color: Colors.white,
+            ),
+
+            SizedBox(width: 10.0),
+
+            Text(
+              'LiteraPhile',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
       ),
+
       body: Container(
         padding: const EdgeInsets.all(16.0),
+
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //     colors: [Color(0xFF04BADE), Color(0xFF55E2E9)],
+        //     stops: [0.3, 0.7],
+        //   ),
+        // ),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
+            const Text(
+              'Literasi untuk Indonesia.',
+              style: TextStyle(
+                fontSize: 25.0,
+              ),
+            ),
+
+            const Text(
+              'Selamat Datang!',
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
             TextField(
               controller: _usernameController,
               decoration: const InputDecoration(
                 labelText: 'Username',
               ),
             ),
+
             const SizedBox(height: 12.0),
+
             TextField(
               controller: _passwordController,
               decoration: const InputDecoration(
@@ -64,7 +120,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               obscureText: true,
             ),
+
             const SizedBox(height: 24.0),
+
             ElevatedButton(
               onPressed: () async {
                 String username = _usernameController.text;
