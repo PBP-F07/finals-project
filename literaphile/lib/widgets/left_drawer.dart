@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:literaphile/screens/landingPage/landing.dart';
 import 'package:literaphile/screens/wishlist_page/wishlist.dart';
 import 'package:literaphile/screens/dashboard_page/dashboard.dart';
-import 'package:literaphile/screens/dashboard_page/booksCheck.dart';
+import 'package:literaphile/screens/login.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Drawer(
       child: ListView(
         children: [
@@ -74,6 +77,40 @@ class LeftDrawer extends StatelessWidget {
                   builder: (context) => const WishlistPage(),
                 ),
               );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text(
+              'Logout',
+              style: TextStyle(color: Colors.red),
+            ),
+            onTap: () async {
+
+              final response = await request.logout(
+                  "https://literaphile-f07-tk.pbp.cs.ui.ac.id/logout-mobile/"
+              );
+              String message = response["message"];
+
+              if (response['status']) {
+                String uname = response["username"];
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("$message Sampai jumpa, $uname.")),
+                );
+                // ignore: use_build_context_synchronously
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                        (route) => false
+                );
+              } else {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message)),
+                );
+              }
+
             },
           ),
         ],
