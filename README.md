@@ -2,8 +2,8 @@
 
 # Tahap I Proyek Akhir Semester
 
-## Link Download Website
-https://install.appcenter.ms/orgs/PBP-F07/apps/LiteraPhile
+## Link Download Aplikasi
+https://install.appcenter.ms/orgs/pbp-f07/apps/literaphile/distribution_groups/public
 
 ## Daftar Nama Anggota Kelompok
 1. Devandra Reswara Arkananta (2206083552)
