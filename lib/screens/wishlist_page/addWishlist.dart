@@ -64,7 +64,6 @@ class _AddWishlistPageState extends State<AddWishlistPage> {
     }
   }
   list_img = list_imgTemp;
-  print(list_product);
   return list_product;
 }
 
