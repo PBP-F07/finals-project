@@ -6,6 +6,8 @@ import 'package:literaphile/models/books.dart';
 import 'package:literaphile/screens/wishlist_page/wishlist.dart';
 import 'package:literaphile/widgets/left_drawer.dart';
 import 'package:literaphile/screens/book_details/book_details.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -60,22 +62,22 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void _borrowBook(int productId) async {
+    final request = context.read<CookieRequest>();
     try {
-      final response = await http.post(
-        Uri.parse(
-            'https://literaphile-f07-tk.pbp.cs.ui.ac.id/borrow_book_flutter/$productId/'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
+      final response = await request.post(
+        'https://literaphile-f07-tk.pbp.cs.ui.ac.id/borrow_book/$productId/',
+        // Add an empty map as the second argument if you don't have a request body
+        <String, dynamic>{},
       );
 
       if (response.statusCode == 204) {
         // Produk berhasil dihapus
         // Lakukan apa pun yang diperlukan, seperti memperbarui tampilan
-        setState(() {});
+        // Refresh the page asynchronously
+        updateBooks(""); // You can pass a searchTitle if needed
       } else {
         // Gagal menghapus produk, tampilkan pesan kesalahan
-        print('Failed to delete product: ${response.statusCode}');
+        print('Failed to borrow book: ${response.statusCode}');
       }
     } catch (e) {
       print('Exception during product deletion: $e');
