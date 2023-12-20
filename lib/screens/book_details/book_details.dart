@@ -201,6 +201,7 @@ class _DiscussionPageState extends State<DiscussionPage> {
                       return ListView.builder(
                           shrinkWrap: true,
                           itemCount: snapshot.data!.length,
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (_, index) {
                               return Container(
                                 margin: const EdgeInsets.symmetric(
